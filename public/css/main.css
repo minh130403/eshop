@@ -1,0 +1,38 @@
+.tag-item{
+    color: rgb(255, 253, 253);
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px 4px;
+    background-color: rgb(72, 139, 246);
+    border-radius: 4px;
+    border: 1px solid black;
+}
+
+.tag-item:hover{
+    cursor: pointer;
+}
+
+.card a{
+    text-decoration: none;
+    color: inherit;
+}
+
+/* /* For Chrome, Safari, Edge, and Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.navbar-nav *{
+    caret-color: transparent;
+}
+
+*:not(input){
+    caret-color: transparent;
+  }
