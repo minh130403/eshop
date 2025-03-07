@@ -31,9 +31,8 @@ class ProductController extends Controller
     public function store(Request $request){
         $newProduct = new Product();
         $newProduct->name = $request->input('name');
-        $newProduct->short_description = '';
-        $newProduct->description = $request->input('description');
-        $newProduct->description = $request->input('short_description');
+        $newProduct->description = $request->input('description') ?? '';
+        $newProduct->short_description = $request->input('short_description') ?? '';
         $newProduct->price = $request->input('price') ?? 0 ;
         $newProduct->slug = Str::of($newProduct->name)->slug('_');
 

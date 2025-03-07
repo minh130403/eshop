@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/"><img class="border rounded-circle " src="{{ asset($shop->logo ?? '') }}" alt="" style="height: 50px"></a>
+    <div class="container">
+      <a class="navbar-brand" href="/"><img class="border rounded-circle " src="{{ asset($shop->logo ?? '') }}" alt="" style="height: 50px"> Eshop</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -21,9 +21,7 @@
             </ul>
           </li>
         </ul>
-
-
-        <form class="d-flex" role="search" action="/product/search/"> 
+        <form class="d-flex mb-3 mb-lg-0" role="search" action="/product/search/"> 
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
         </form>
 

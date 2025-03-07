@@ -18,8 +18,8 @@ use Illuminate\Support\Str;
 class ShopController extends Controller
 {
     public function index(){
-        $newestProducts = Product::orderBy('created_at','desc')->take(10)->get();
-        $popularProducts = Product::take(10)->get();
+        $newestProducts = Product::orderBy('created_at','desc')->take(4)->get();
+        $popularProducts = Product::take(4)->get();
 
         return view('home_page',[
             'newestProducts' => $newestProducts,

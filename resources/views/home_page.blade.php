@@ -49,113 +49,25 @@
         <div class="row mb-3">
             <div class="d-flex justify-content-between">
                 <h2>Newest Products</h2>
-              
-
             </div>
-            <div id="carouselNewestProduct" class="carousel slide">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row row-cols-5">
-                          @foreach ($newestProducts->slice(0,5) as $product)
-                          <div class="col mb-3">
-                            <a href="/product/{{ $product->slug }}">
-                                <div class="card">
-                                  <img style="height: 240px;" src="{{ asset($product->avatar->src) }}" class="card-img-top" alt="{{ $product->avatar->alt }}">
-                                  <div class="card-body" style="height: 160px">
-                                    <h5 class="card-title">{{ $product->name }}</h5>
-                                    <p class="card-text">{{ number_format($product->price)  }} VNĐ</p>
-                                    <a href="/add-to-cart/{{ $product->id }}" class="btn btn-primary">Add to Cart</a>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                          @endforeach
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row row-cols-5">
-                          @foreach ($newestProducts->slice(5,10) as $product)
-                          <div class="col mb-3">
-                            <a href="/product/{{ $product->slug }}">
-                                <div class="card">
-                                  <img style="height: 240px;" src="{{ asset($product->avatar->src) }}" class="card-img-top" alt="{{ $product->avatar->alt }}">
-                                  <div class="card-body" style="height: 160px">
-                                    <h5 class="card-title">{{ $product->name }}</h5>
-                                    <p class="card-text">{{ number_format($product->price)  }} VNĐ</p>
-                                    <a href="/add-to-cart/{{ $product->id }}" class="btn btn-primary">Add to Cart</a>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                          @endforeach
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselNewestProduct" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselNewestProduct" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
         </div>
+              <div class="row">  
+                @foreach ($newestProducts as $product)
+                <x-product-card :product="$product"></x-product-card>
+                @endforeach
+              </div>
 
         {{-- Popular Products --}}
-        <div class="row mb-2">
+        <div class="row mb-3">
             <div class="d-flex justify-content-between">
                 <h2>Popular Products</h2>
-
             </div>
-            <div id="carouselPopularProduct" class="carousel slide">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row row-cols-5">
-                           @foreach ($popularProducts->slice(0,5) as $product)
-                        <div class="col mb-3">
-                          <a href="/product/{{ $product->slug }}">
-                              <div class="card">
-                                <img style="height: 240px;" src="{{ asset($product->avatar->src) }}" class="card-img-top" alt="{{ $product->avatar->alt }}">
-                                <div class="card-body" style="height: 160px">
-                                  <h5 class="card-title">{{ $product->name }}</h5>
-                                  <p class="card-text">{{ number_format($product->price)  }} VNĐ</p>
-                                  <a href="/add-to-cart/{{ $product->id }}" class="btn btn-primary">Add to Cart</a>
-                                  </div>
-                              </div>
-                          </a>
-                      </div>
-                           @endforeach
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row row-cols-5">
-                          @foreach ($popularProducts->slice(5,10) as $product)
-                          <div class="col mb-3">
-                            <a href="/product/{{ $product->slug }}">
-                                <div class="card">
-                                  <img style="height: 240px;" src="{{ asset($product->avatar->src) }}" class="card-img-top" alt="{{ $product->avatar->alt }}">
-                                  <div class="card-body" style="height: 160px">
-                                    <h5 class="card-title">{{ $product->name }}</h5>
-                                    <p class="card-text">{{ number_format($product->price)  }} VNĐ</p>
-                                    <a href="/add-to-cart/{{ $product->id }}" class="btn btn-primary">Add to Cart</a>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                          @endforeach
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselPopularProduct" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselPopularProduct" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
+          </div>
+          <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4">  
+            @foreach ($popularProducts as $product)
+              <x-product-card :product="$product"></x-product-card>
+            @endforeach
+          </div>
         </div>
        
     </div>

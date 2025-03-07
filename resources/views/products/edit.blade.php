@@ -14,15 +14,13 @@
                       </div>
                       <div class="mb-3">
                         <label for="shortDescriptionEditor" class="form-label">Product's Short Description:</label>
-                        <textarea name="short_description" id="shortDescriptionEditor">
-                            {{ $product->short_description }}
-                        </textarea>
+                           <x-forms.tinymce-editor selector="short_description" :value="$product->short_description"></x-forms.tinymce-editor>
+                           <x-head.tinymce-config selector="short_description" :value="$product->description"></x-head.tinymce-config>
                       </div>
                       <div class="mb-3">
                         <label for="descriptionEditor" class="form-label">Product's Description:</label>
-                        <textarea name="description" id="descriptionEditor">
-                          {{ $product->description }}
-                        </textarea>    
+                        <x-forms.tinymce-editor selector="description"></x-forms.tinymce-editor>
+                          <x-head.tinymce-config selector="description" ></x-head.tinymce-config>
                       </div>
                       <div class="mb-3">
                         <label for="title" class="form-label">Categories:</label>
@@ -131,82 +129,5 @@
     </div>
 
   </form>
-    <script>
-        var mediaListElement = document.querySelector('#media-list');
 
-      
-        async function renderMedia(){
-          const  url = 'http://localhost:8000/api/media/all'
-          try {
-            const response = await fetch(url);
-            console.log('Hello')
-            const json = await response.json();
-            const images = json.data;
-
-            var list = ''
-
-            images.forEach(image => {
-              list = list + `<div class="col mb-2">
-                                    <label for="radio${image.id}"><img class=" border rounded " style="height: 200px; width:160px" src="http://localhost:8000/${image.src}" alt="${image.alt}"></label>
-                                    <input type="radio" name="radio" id="radio${image.id}" data-id="${image.id}">
-                                  </div>`
-            });
-
-            mediaListElement.innerHTML = list;
-
-
-            var inputImages = mediaListElement.querySelectorAll('input');
-            var imageSelected;
-            
-            inputImages.forEach(input => {
-              input.onchange = function(){
-                  if(input.checked){
-                    imageSelected = images.find(image => image.id == input.dataset.id)
-                    var formEdit = document.querySelector('#image-info');
-
-                    formEdit.querySelector('#nameImage').innerText = imageSelected.name;
-                    formEdit.querySelector('#altImage').innerText = imageSelected.alt;
-                    formEdit.querySelector('#uploadedImage').innerText = imageSelected.created_at;
-                    formEdit.querySelector('#updatedImage').innerText = imageSelected.updated_at;
-                    // console.log(image)
-                  }
-              }
-            })
-
-
-            const chooseModalBtn = document.querySelector('#chooseImgBtn');
-
-            chooseModalBtn.onclick = function() {
-              var avatarLabel = document.querySelector('#avatarLabel');
-              avatarLabel.innerHTML = `<div class="text-start" style="width:100%">Avatar:</div>  
-                      <img class="border rounded mt-2 " style="height: 300px; width:250px" src="http://localhost:8000/${imageSelected.src}" alt="${imageSelected.alt}">                
-                `;
-
-              document.querySelector('#avatar_id').value = imageSelected.id;
-            }
-            
-          } catch (error) {
-            console.error(error.message);
-          }
-        }
-
-        renderMedia();
-        
-    </script>
-
-<script src="https://cdn.tiny.cloud/1/q621zku9ks0ovuoai50q1h5mksnfw5iyec9hnvib6xrbgefr/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-  tinymce.init({
-    selector: 'textarea#shortDescriptionEditor', // Replace this CSS selector to match the placeholder element for TinyMCE
-    plugins: 'code table lists image',
-    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | image'
-  });
-</script>
-<script>
-  tinymce.init({
-    selector: 'textarea#descriptionEditor', // Replace this CSS selector to match the placeholder element for TinyMCE
-    plugins: 'code table lists image',
-    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | image'
-  });
-</script>
 @endsection

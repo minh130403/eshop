@@ -12,14 +12,14 @@
         </div>
         <hr>
         <div class="row mb-3">
-            <div class="col-4">
-                <img src="{{ asset($product->avatar->src) }}" class="img-fluid" alt="{{ $product->avatar->alt }}">
+            <div class="col-12 col-md-4">
+                <img src="{{ asset($product->avatar->src) }}" class="img-fluid object-fit-scale" alt="{{ $product->avatar->alt }}">
             </div>
 
-            <div class="col-8">
+            <div class="col-12 col-md-8">
                 <h1>{{ $product->name }}</h1>
-                <span> <b> {{ number_format($product->price) }} VND </b> </span>
-                <div> {!! $product->short_description !!}
+                <span class="mb-3"> <b> {{ number_format($product->price) }} VND </b> </span>
+                <div class="mb-3"> {!! $product->short_description !!}
                 </div>
                 <span></span>
                 <div class="mb-1">
@@ -108,52 +108,13 @@
     <div class="row mb-2">
         <div class="d-flex justify-content-between">
             <h2>Similar Products</h2>
-            <a class="d-flex align-items-end mb-2" href=""><span>More</span></a>
         </div>
-        <div id="carouselSimilarProduct" class="carousel slide">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row row-cols-4">
-                        @for ($i = 0; $i< 4; $i++)
-                        <div class="col">
-                            <div class="card" style="width: 18rem;">
-                                <img src="https://th.bing.com/th/id/OIP.SUA8N47Q2yLwM8s6cXlkmAHaHO?w=189&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                <h5 class="card-title">Card title {{ $i }}</h5>
-                                <p class="card-text">1.000.000 VND</p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        @endfor
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row row-cols-4">
-                        @for ($i = 4; $i< 8; $i++)
-                        <div class="col">
-                            <div class="card" style="width: 18rem;">
-                                <img src="https://th.bing.com/th/id/OIP.SUA8N47Q2yLwM8s6cXlkmAHaHO?w=189&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                <h5 class="card-title">Card title {{ $i }}</h5>
-                                <p class="card-text">1.000.000 VND</p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                                </div>
-                            </div>
-                        </div>
-                        @endfor
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselSimilarProduct" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselSimilarProduct" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
+        <div class="container">
+            <div class="row row-cols-2 row-cols-md-4 g-4">
+                @foreach ($similarProducts ?? [] as $product)
+                   <x-product-card :product="$product"></x-product-card>
+                @endforeach
+        </div>
     </div>
     </div>
 

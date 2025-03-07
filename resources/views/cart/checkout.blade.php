@@ -19,7 +19,7 @@
                   <input type="text" class="form-control" id="name" name="fullname">
                 </div>
                 <div class="col-md-6">
-                  <label for="phone" class="form-label">Email</label>
+                  <label for="phone" class="form-label">Phone</label>
                   <input type="text" class="form-control" id="email" name="phone">
                 </div>
                 <div class="col-md-6">

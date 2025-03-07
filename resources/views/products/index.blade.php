@@ -12,9 +12,9 @@
                     <thead>
                         <tr>
                           <th scope="col">#</th>
-                          <th scope="col">Avatar</th>
+                          <th scope="col">Image</th>
                           <th scope="col">Product's Name</th>
-                          <th scope="col">Price</th>
+                          <th scope="col">Price ({{ $shop->curency ?? 'VNĐ' }})</th>
                           <th scope="col">Actions</th>
                         </tr>
                       </thead>
@@ -28,7 +28,7 @@
                           </th>
                           <td style="width:60px"> <img class="border rounded img-fluid" src="{{ asset($product->avatar->src) }}"  alt="..."> </td>
                           <td>{{ $product->name }}</td>
-                          <td>{{ $product->price }}</td>
+                          <td>{{ number_format($product->price) }} </td>
                           <td>
                             <a href="http://localhost:8000/admin/products/edit/{{ $product->id }}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
                             <form action="/admin/products/delete/{{ $product->id }}" method="POST"  style="display: inline-block !important;">

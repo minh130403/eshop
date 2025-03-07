@@ -1,5 +1,5 @@
 <div>
     <form method="post">
-        <textarea  name="description">Hello, World!</textarea>
+        <textarea  name="{{ $selector}}" id="{{ $selector  }}">{{ $value }}</textarea>
       </form>
 </div>

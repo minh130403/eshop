@@ -1,37 +1,40 @@
 <?php
 
-namespace App\View\Components\Head;
+namespace App\View\Components;
 
 use Illuminate\View\Component;
-use SebastianBergmann\CodeCoverage\Driver\Selector;
 
-class tinymceConfig extends Component
+class ProductCard extends Component
 {
-
+    
     /**
-     * The selector type
-     * @var string
+     * The product 
+     * 
+     * @var \App\Models\Product
      */
-    public $selector ;
 
+     public $product;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($selector = '')
+    public function __construct($product)
     {
-        $this->selector = $selector;
+        $this->product = $product;
     }
+
 
     /**
      * Get the view / contents that represent the component.
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
+
+     
     public function render()
     {
-        return view('components.head.tinymce-config');
+        return view('components.product-card');
     }
 }

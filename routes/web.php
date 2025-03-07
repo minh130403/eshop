@@ -18,7 +18,7 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/', [ShopController::class, 'index']);
+
 
 
 
@@ -49,7 +49,7 @@ Route::get('/product/{slug}', [ProductController::class, 'show']);
 
 // ADMIN 
 
-Route::middleware(['auth', 'admin'])->group(function(){
+Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
     
     Route::get('/admin', [ShopController::class, 'showConfigPage']);
@@ -133,7 +133,8 @@ Route::post('/admin/logout', [AuthController::class, 'logout'] );
 
 Route::post('/admin/register', [AuthController::class, 'register'] );
 
-
+Route::get('/not-available-on-mobile', function (){ return view("no_mobile");} )->name('not-available-on-mobile');
 // Route::get('/admin', function () {return view('admin.site_config');});
 
 
+Route::get('/', [ShopController::class, 'index']);

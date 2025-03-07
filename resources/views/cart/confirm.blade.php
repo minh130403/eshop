@@ -13,7 +13,7 @@
           <h1>Confirm</h1>
 
           <div class="row">
-             <div class="col-9">
+             <div class="col-12 col-md-9">
                 <table class="table">
                     <tbody>
                       <tr>
@@ -61,8 +61,9 @@
                       </tbody>
                   </table>
              </div>
-             <div class="col-3">
-                <div class="row mb-3">
+             <div class="col-12 col-md-3">
+                <div class="container">
+                  <div class="row mb-3">
                     <div class="col">Total Quantity:</div>
                     <div class="col">{{ $cart->totalQuantity }} units</div>
                 </div>
@@ -98,6 +99,7 @@
                       <button type="submit" class="btn btn-primary">Pay</button>
                     </form>
                    
+                </div>
                 </div>
              </div>
           </div>

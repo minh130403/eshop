@@ -6,14 +6,29 @@ use Illuminate\View\Component;
 
 class tinymceEditor extends Component
 {
+    
+    /**
+     * The selector type
+     * @var string
+     */
+    public $selector ;
+
+        /**
+     * The value type
+     * @var string
+     */
+    public $value ;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($selector = '', $value = '')
     {
-        //
+        $this->selector=$selector;
+        $this->value = $value;
     }
 
     /**

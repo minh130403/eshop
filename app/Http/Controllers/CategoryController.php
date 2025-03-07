@@ -68,7 +68,7 @@ class CategoryController extends Controller
 
     public function show($slug)  {
         $category = Category::where('slug',$slug)->firstOrFail();
-        $products = $category->products()->paginate(12);
+        $products = $category->products()->paginate(8);
         return view('categories.view', [
             'categoryShowed' => $category,
             'products' => $products
