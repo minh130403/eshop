@@ -18,8 +18,8 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => ['required'],
+            'password' => ['required', 'min:6'],
         ]);
 
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
             }
         }
  
-        return back()->with('error', 'Has eror');
+        return back()->with('error', 'Incorrect account or password');
     }
 
 
@@ -48,7 +48,7 @@ class AuthController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:5',
             ]
-            );
+        );
 
         $user = User::create([
             'name' => $validateData['name'],

@@ -37,7 +37,7 @@ class ProductFactory extends Factory
         return $this->afterCreating(function (Product $product) {
             $categories = Category::all()->pluck('id')->toArray();
             $product->categories()->attach(fake()->randomElements($categories));
-            $product->avatar()->associate(Media::factory()->create());
+            $product->avatar()->associate(Media::first());
             $product->save();
         });
     }

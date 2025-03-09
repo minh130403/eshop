@@ -12,105 +12,158 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
 {
+    /**
+     * Show all products
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index(){
-        $products = Product::orderBy('created_at', 'desc')->paginate(5);
-        return view('products.index', [
-            'products' => $products,
-            'page_group' => 'product' 
-        ]);
+        $products = Product::orderByDesc('created_at')->paginate(6);
+        $page_group = 'product';
+
+        return view('products.index')->with(compact('products', 'page_group'));
     }
 
-    public function add(){
-        $categories = Category::all();
-        return view('products.add',[
-            'categories' => $categories,
-            'page_group' => 'product' 
-        ]);
+    /**
+     * Show create product page
+     * @return mixed|\Illuminate\Contracts\View\View
+     */
+    public function create(){
+
+        return view('products.create')->with('page_group', 'product');
     }
 
+    /**
+     * Store a new product object
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(Request $request){
-        $newProduct = new Product();
-        $newProduct->name = $request->input('name');
-        $newProduct->description = $request->input('description') ?? '';
-        $newProduct->short_description = $request->input('short_description') ?? '';
-        $newProduct->price = $request->input('price') ?? 0 ;
-        $newProduct->slug = Str::of($newProduct->name)->slug('_');
-
-        $avatar = Media::find($request->input('avatar_id'));
- 
-        $avatar->products()->save($newProduct);
-
-        $categories = Category::findMany( $request->input('categories', []));
-        
-        // foreach($categories as $category){
-        //     $category->products()->save($newProduct);
-        // }
 
 
-        foreach($categories as $category){
-            $newProduct->categories()->save($category);
+        $validatedData = $request->validate([
+            'name' => ['required'],
+            'description' => ['nullable'],
+            'short_description' => ['nullable'],
+            'price' => ['nullable','numeric', 'max:1000000000' ,'min:0'],
+            'avatar_id' => ['nullable', 'image'],
+            'categories' => ['nullable', 'array', 'exists:categories,id'],
+        ]);
+
+
+        // dd( $validatedData['short_description']);
+
+        $product = Product::create(array_merge(array_slice($validatedData,0,5), ['slug' => Str::of($validatedData['name'])->slug('_')]) );
+
+       
+
+
+        if(isset($validatedData['categories'])){
+            foreach($validatedData['categories'] as $id){
+                $product->categories()->save(Category::find($id));
+            }
         }
        
 
-        return redirect('/admin/products/');
+        return redirect('/admin/product/');
     }
 
-    public function edit($id){
-        $product = Product::find($id);
-        $categories = Category::all();
+    /**
+     * Edit a product object
+     * @param \App\Models\Product $product
+     * @return mixed|\Illuminate\Contracts\View\View
+     */
+    public function edit(Product $product){
+        $page_group = 'product';
 
-        return view('products.edit',[
-            'product' => $product,
-            'categories' => $categories,
-            'page_group' => 'product' 
-       ]);
+        // dd($product->avatar->src);
+
+        return view('products.edit')->with(compact('product', 'page_group'));
     }
 
+
+    /**
+     * Update product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function update(Request $request, Product $product){
-        $product->name = $request->input('name');
-        $product->short_description = $request->input('short_description') ?? $product->short_description;
-        $product->description = $request->input('description') ?? $product->description;
-        $product->price = $request->input('price') ?? $product->price;
-        $product->avatar_id = $request->input('avatar_id') ?? $product->avatar_id;
-        $categories = Category::findMany( $request->input('categories', []));
+         $validatedData = $request->validate([
+            'name' => ['required'],
+            'description' => ['nullable'],
+            'short_description' => ['nullable'],
+            'price' => ['nullable','numeric', 'max:1000000000' ,'min:0'],
+            'avatar_id' => ['nullable', 'exists:images,id'],
+            'categories' => ['nullable', 'array', 'exists:categories,id'],
+        ]);
+
+        // dd( $request->all());
+
+
+        $product->update(array_merge(array_slice($validatedData,0, 5), ['slug' => Str::of($validatedData['name'])->slug('_')]));
+
+        // $product->avatar_id = (int) $validatedData['avatar_id'];
+
+        // $avatar = Media::find($validatedData['avatar_id']);
+
+        // $avatar->products()->save($product);
 
         $product->categories()->detach();  
 
-        foreach($categories as $category){
-            $product->categories()->save($category);
+        if(isset($validatedData['categories'])){
+            foreach($validatedData['categories'] as $id){
+                $product->categories()->save(Category::find($id));
+            }
         }
 
-        $product->save();
+       
 
-        return view('products.edit',[
-            'product' => $product,
-            'page_group' => 'product' 
-       ]);
+        return redirect("/admin/product/$product->id" );
     }
 
 
+    /**
+     * Delete a product
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete(Product $product){
         $product->delete();
         return back();
     }
 
+
+    /**
+     * Show the product page
+     * @param mixed $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function show($slug){
         $product = Product::where('slug', $slug)->first();
 
-        return view('products.view',[
-            'product' => $product,
-       ]);
+        return view('products.view')->with(compact('product'));
     }
 
 
+    /**
+     * Find products by keyword
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function search(Request $request){
         $keyword = $request->input('keyword');
-        $result = Product::where('name', 'LIKE', '%' . $keyword . '%')->paginate(12);
+        $result = Product::where('name', 'LIKE', '%' . $keyword . '%')->paginate(8);
 
-        return view('products.search', ['result' => $result, 'keyword' => $keyword]);
+        return view('products.search')->with(compact('result', 'keyword'));
     }
 
 
+    /**
+     * Add the product into the cart
+     * @param mixed $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function addToCart($id, Request $request){
         $product = Product::find($id);
         $oldCart = $request->session()->get('cart') ?? null;
@@ -124,8 +177,13 @@ class ProductController extends Controller
     }
 
 
-    public function removeOutCart($id, Request $request){
-        $product = Product::find($id);
+    /**
+     * Remove the product outto the cart
+     * @param mixed $id
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function removeOutCart(Product $product, Request $request){
         $oldCart = $request->session()->get('cart') ?? null;
         $cart = new Cart($oldCart);
 
@@ -136,7 +194,10 @@ class ProductController extends Controller
         return redirect('/cart');
     }
 
-
+    /**
+     * Show comment list
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function comments(){
         $comments = Comment::orderBy('created_at', 'desc')->paginate(10);
 
@@ -149,15 +210,16 @@ class ProductController extends Controller
 
     /**
      * Add a new comment for the product from a user
-     * @param number $productId
-     * @return \App\Models\Comment; 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function addComment(Request $request, $productId){
+    public function addComment(Request $request, Product $product){
         $comment = new Comment();
 
         $comment->content = $request->input('content');
         $comment->user_id = Auth::id();
-        $comment->product_id = $productId;
+        $comment->product_id = $product->id;
         $comment->save();
 
         return back();

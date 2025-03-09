@@ -1,7 +1,7 @@
 @extends('admin.dashbroad')
 
 @section('body')
-<form class="d-flex" action="" method="POST">
+<form class="d-flex" action="" method="POST" id="productForm">
   @csrf
   @method('PUT')
     <div class="container-fluid mt-3">
@@ -12,15 +12,15 @@
                         <label for="title" class="form-label">Product's Title</label>
                         <input type="text" class="form-control" id="" name="name" value="{{ $product->name }}">
                       </div>
+                     
                       <div class="mb-3">
                         <label for="shortDescriptionEditor" class="form-label">Product's Short Description:</label>
-                           <x-forms.tinymce-editor selector="short_description" :value="$product->short_description"></x-forms.tinymce-editor>
-                           <x-head.tinymce-config selector="short_description" :value="$product->description"></x-head.tinymce-config>
+                           <x-forms.tinymce-editor selector="editor" id="short_description" name="short_description" :value="$product->short_description"></x-forms.tinymce-editor>
                       </div>
                       <div class="mb-3">
                         <label for="descriptionEditor" class="form-label">Product's Description:</label>
-                        <x-forms.tinymce-editor selector="description"></x-forms.tinymce-editor>
-                          <x-head.tinymce-config selector="description" ></x-head.tinymce-config>
+                        <x-forms.tinymce-editor selector="editor" id="description_tiny" name="description_tiny" :value="$product->description"></x-forms.tinymce-editor>
+                        <textarea name="description" id="" style="display: none"></textarea>
                       </div>
                       <div class="mb-3">
                         <label for="title" class="form-label">Categories:</label>
@@ -44,9 +44,15 @@
                       </div>
                       <div class="input-group mb-3">
                         
-                        <input type="number" class="form-control" name="price"  aria-describedby="basic-addon2" value="{{ $product->price }}">
+                        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price"  aria-describedby="basic-addon2" value="{{ $product->price }}">
+                        
                         <span class="input-group-text" id="basic-addon2">VNĐ</span>
+                        
+                        
                       </div>
+                      @error('price')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                         @enderror
                       <div >
                         <label class="form-label">Tags: (Mỗi tag cách nhau bởi 1 dấu chấm phẩy)</label>
                         <input type="text" class="form-control" >
@@ -58,9 +64,18 @@
                   
                     <label id="avatarLabel" class="form-label" for="" data-bs-toggle="modal" data-bs-target="#mediaModal">
                         <div class="text-start" style="width:100%">Avatar:</div>  
+                        @empty($product->avatar_id)
+                        <div class="border rounded mt-2 d-flex justify-content-center align-items-center" style="height: 300px; width:250px">
+                          <i class="fa-solid fa-plus"></i>
+                      </div>
+                        @endempty
+
+                        @isset($product->avatar_id)
                         <img class="border rounded mt-2 " style="height: 300px; width:250px" src="{{ asset($product->avatar->src)}}" alt="{{ $product->avatar->alt }}">
+                        @endisset
+
                     </label>
-                    <input type="text" style="display: none" name="avatar_id" id="avatar_id">
+                    <input type="text" style="display: none" name="avatar_id" id="avatar_id" @isset($product->avatar_id) value="{{ $product->avatar->id  }}" @endisset>
                 </div>
                 
                 <!-- Modal -->
@@ -129,5 +144,6 @@
     </div>
 
   </form>
+
 
 @endsection

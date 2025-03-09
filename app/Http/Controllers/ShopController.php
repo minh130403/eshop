@@ -72,19 +72,19 @@ class ShopController extends Controller
     }
 
 
-    public function getToCheckOut(){
+    public function showCheckOutPage(){
         return view('cart.checkout');
     }
 
-    public function getToConfirm(Request $request){
-        $customerInfo = [
-            'fullname' => $request->input('fullname') ?? '',
-            'email' => $request->input('email') ?? '',
-            'address' => $request->input('address') ?? '',
-            'city' => $request->input('city') ?? '',
-            'note' => $request->input('note') ?? '',
-            'phone' => $request->input('phone') ?? ''
-        ];
+    public function showConfirmPage(Request $request){
+        $customerInfo = $request->validate([
+            'fullname' => ['required'],
+            'email' => ['required','email'],
+            'address' => ['required'],
+            'city' => ['required'],
+            'note' => ['nullable'],
+            'phone' =>['required', 'regex:/^(\+84|0)(\d{9})$/']
+        ]);
 
         $cart = $request->session()->get('cart');
 
@@ -148,9 +148,7 @@ class ShopController extends Controller
     }
 
 
-    public function detailOrder(Order $order){
-
-
+    public function showDetailOrder(Order $order){
         return view('order.detail', [
             'order' => $order,
             'page_group' => 'shop'
@@ -169,12 +167,22 @@ class ShopController extends Controller
 
     public function addConfig(Request $request){
         $shop =  ShopConfig::orderBy('created_at', 'desc')->first() ?? new ShopConfig();
+        
+        $validatedData = $request->validate([
+            'name' => ['nullable'],
+            'email' =>  ['nullable', 'email'],
+            'address' => ['nuLlable'],
+            'phone' => ['nullable', 'regex:/^(\+84|0)(\d{9})$/'],
+            'currency' => ['nullable'],
+            'logo' => ['nullable', 'mimes:jpg, png'],
+            'favicon' => ['nullable', 'mimes:jpg, png']
+        ]);
 
-        $shop->name = $request->input('name');
-        $shop->email = $request->input('email');
-        $shop->address = $request->input('address');
-        $shop->phone = $request->input('phone');
-        $shop->currency = $request->input('currency');
+        $shop->name = $validatedData['name'];
+        $shop->email = $validatedData['email'];
+        $shop->address = $validatedData['address'];
+        $shop->phone = $validatedData['phone'];
+        $shop->currency = $validatedData['currency'];
 
         if($request->hasFile('logo')){
 

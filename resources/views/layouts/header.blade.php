@@ -21,12 +21,12 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex mb-3 mb-lg-0" role="search" action="/product/search/"> 
+        <form class="d-flex mb-3 mb-lg-0" role="search" action="/product/search/" style="display: inline-block !important;"> 
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
         </form>
 
         @if (Auth::check())
-          <form action="/admin/logout" method="POST">
+          <form class="d-flex mb-3 mb-lg-0" action="/admin/logout" method="POST" style="display: inline-block !important;">
             @csrf
             <button type="submit" class="btn btn-primary ms-2" href="">Logout</button>
           </form>

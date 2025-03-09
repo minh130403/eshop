@@ -19,16 +19,22 @@ class tinymceEditor extends Component
      */
     public $value ;
 
+            /**
+     * The name type
+     * @var string
+     */
+    public $name ;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($selector = '', $value = '')
+    public function __construct($selector = '', $value = '', $name)
     {
         $this->selector=$selector;
         $this->value = $value;
+        $this->name = $name;
     }
 
     /**

@@ -31,7 +31,7 @@ class CategoryFactory extends Factory
 
     public function configure(){
         return $this->afterCreating(function (Category $category){
-            $category->avatar()->associate(Media::factory()->create());
+            $category->avatar()->associate(Media::first());
             $category->save();
         });
     }

@@ -16,7 +16,7 @@
    <style>
 
     </style>
-
+   
 </head>
 <body>
    <div class="">
@@ -37,9 +37,9 @@
                                 <i class="fa-solid fa-box"></i> Product
                             </span>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="/admin/products/add"><i class="fa-solid fa-plus"></i> Add a New Product</a></li>
-                              <li><a class="dropdown-item" href="/admin/products"><i class="fa-solid fa-bars"></i> All Products</a></li>
-                              <li><a class="dropdown-item" href="/admin/products/comments"><i class="fa-solid fa-comment"></i> Comments</a></li>
+                              <li><a class="dropdown-item" href="/admin/product/create"><i class="fa-solid fa-plus"></i> Add a New Product</a></li>
+                              <li><a class="dropdown-item" href="/admin/product"><i class="fa-solid fa-bars"></i> All Products</a></li>
+                              <li><a class="dropdown-item" href="/admin/product/comments"><i class="fa-solid fa-comment"></i> Comments</a></li>
                               {{-- <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash"></i> Trash</a></li> --}}
                             </ul>
                           </div>
@@ -51,7 +51,7 @@
                                 <i class="fa-solid fa-book"></i> Category
                             </span>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="/admin/category/add"><i class="fa-solid fa-plus"></i> New Category</a></li>
+                              <li><a class="dropdown-item" href="/admin/category/create"><i class="fa-solid fa-plus"></i> New Category</a></li>
                               <li><a class="dropdown-item" href="/admin/category"><i class="fa-solid fa-bars"></i> All Categories</a></li>
                               {{-- <li><a class="dropdown-item" href=""><i class="fa-solid fa-trash"></i> Trash</a></li>     --}}
                             </ul>
@@ -87,7 +87,7 @@
                                 <i class="fa-solid fa-image"></i> Media   
                             </span>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="/admin/media/upload"><i class="fa-solid fa-plus"></i> Add Image</a></li>
+                              <li><a class="dropdown-item" href="/admin/media/create"><i class="fa-solid fa-plus"></i> Add Image</a></li>
                               <li><a class="dropdown-item" href="/admin/media"><i class="fa-solid fa-image"></i> All Image</a></li>
                             </ul>
                           </div>
@@ -120,4 +120,5 @@
     </div>  
    </div>
 </body>
+<x-head.tinymce-config selector="editor" ></x-head.tinymce-config>
 </html>

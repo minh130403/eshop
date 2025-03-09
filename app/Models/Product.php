@@ -9,6 +9,30 @@ class Product extends Model
 {
     use HasFactory;
 
+    
+     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+
+     protected $table = 'products';
+
+
+     /**
+      * The attributes that are mass assignable.
+      *
+      * @var array<int, string>
+      */
+     protected $fillable = [
+         'name',
+         'description',
+         'short_description',
+         'slug',
+         'price',
+         'avatar_id'
+     ];
+
     public function categories()
     {
         return $this->morphToMany(Category::class, 

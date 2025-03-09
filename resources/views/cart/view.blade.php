@@ -17,7 +17,7 @@
           <h1>Cart</h1>
         <div class="row">
             <div class="col-12 col-lg-9">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover cart-table">
                     <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary" id="updateCart">Update Cart</button>
-                    <a href="/check-out" class="btn btn-primary" id="nextToBtn">Get to Checkout</a>
+                    <a href="/check-out" class="btn btn-primary" id="nextToBtn"  @empty($cart->items) style=" pointer-events: none; background:gray" @endempty >Get to Checkout</a>
                 </div>
             </div>
         </div>
@@ -79,34 +79,6 @@
 
     <script>
 
-      $addBtnElements = document.querySelectorAll('.add-button');
-      $subBtnElements = document.querySelectorAll('.sub-button');
-      $nextToBtn = document.querySelector('#nextToBtn');
-      $updateBtn = document.querySelector('#updateCart');
-
-      $addBtnElements.forEach(btn => {
-          btn.onclick = function() {
-            var inputSelected = document.querySelector(`[data-id="${this.dataset.btnTarget}"]`);
-            if( inputSelected.value <  10){
-              inputSelected.value ++;
-            }
-            nextToBtn.style.pointerEvents = 'none';
-            nextToBtn.classList.add('disabled');
-          }
-      });
-
-      $subBtnElements.forEach(btn => {
-          btn.onclick = function() {
-            var inputSelected = document.querySelector(`[data-id="${this.dataset.btnTarget}"]`);
-            if( inputSelected.value > 0){
-              inputSelected.value --;
-            }
-             
-            nextToBtn.style.pointerEvents = 'none';
-            nextToBtn.classList.add('disabled');
-          }
-         
-      });
 
 
       

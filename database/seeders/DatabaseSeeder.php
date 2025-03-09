@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'user',
         ]);
 
+
+        \App\Models\Media::factory()->create();
+
+
         \App\Models\User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@example.com',

@@ -27,7 +27,9 @@ class Category extends Model
          'name',
          'description',
          'avatar_id',
-         'slug'
+         'slug',
+         'created_at',
+         'updated_at'
      ];
  
     public function avatar(){

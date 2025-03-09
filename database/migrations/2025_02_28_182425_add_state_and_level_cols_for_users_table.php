@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('level_id');
             $table->unsignedBigInteger('state_id')->nullable();
 
-            $table->foreign('level_id')->references('id')->on('user_levels');
-            $table->foreign('state_id')->references('id')->on('user_states');
+            $table->foreign('level_id')->references('id')->on('user_levels')->cascadeOnDelete();
+            $table->foreign('state_id')->references('id')->on('user_states')->cascadeOnDelete();
         });
     }
 

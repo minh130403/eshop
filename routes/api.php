@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\UserCollection;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MediaController;
@@ -19,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/media/all', [MediaController::class, 'allApi']);
+Route::get('/media', [MediaController::class, 'indexAPI']);
+

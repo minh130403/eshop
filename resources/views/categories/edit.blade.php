@@ -15,8 +15,8 @@
                       </div>
                       <div class="mb-3">
                         <label for="title" class="form-label">Category's Description:</label>
-                        <x-forms.tinymce-editor selector="description" :value="$category->description"></x-forms.tinymce-editor> 
-                        <x-head.tinymce-config selector="description"></x-head.tinymce-config>
+                        <x-forms.tinymce-editor selector="editor" :value="$category->description" name="description"></x-forms.tinymce-editor> 
+                      
                       </div>
                  
             </div>
@@ -25,9 +25,17 @@
                   
                     <label id="avatarLabel" class="form-label" for="" data-bs-toggle="modal" data-bs-target="#mediaModal">
                         <div class="text-start" style="width:100%">Avatar:</div>   
-                      <img class="border object-fit-scale rounded mt-2 " style="height: 300px; width:250px" src="{{ asset($category->avatar->src)}}" alt="{{ $category->avatar->alt }}">
-                    </label>
-                    <input type="text" style="display: none" name="avatar_id" id="avatar_id" value="{{ $category->avatar->id }}">
+                        @empty($category->avatar_id)
+                        <div class="border rounded mt-2 d-flex justify-content-center align-items-center" style="height: 300px; width:250px">
+                          <i class="fa-solid fa-plus"></i>
+                      </div>
+                        @endempty
+
+                        @isset($category->avatar_id)
+                        <img class="border rounded mt-2 " style="height: 300px; width:250px" src="{{ asset($category->avatar->src)}}" alt="{{ $category->avatar->alt }}">
+                        @endisset
+                      </label>
+                    <input type="text" style="display: none" name="avatar_id" id="avatar_id" value="{{ $category->avatar->id  ?? null}}">
                 </div>
                   
                 <!-- Modal -->
@@ -42,12 +50,7 @@
                         <div class="row " style="height: 70vh">
                           <div class="col-8 border rounded media-list" style="height: 100%; overflow-y:scroll ;">
                               <div class="row row-cols-4 p-2" id="media-list">
-                                  @for ($i = 0; $i < 16; $i++)
-                                  <div class="col mb-2">
-                                    <label for="radio{{ $i }}"><img id="img{{$i }}" class=" border rounded " style="height: 100%; width:100%" src="https://th.bing.com/th/id/OIP.SUA8N47Q2yLwM8s6cXlkmAHaHO?rs=1&pid=ImgDetMain" alt=""></label>
-                                    <input type="radio" name="radio" id="radio{{ $i }}" data-id="img{{ $i }}">
-                                  </div>
-                                  @endfor
+                                  {{-- Render media l --}}
                               </div>
                           </div>
                           <div class="col-4 image-info border rounded" style="height: 100%">

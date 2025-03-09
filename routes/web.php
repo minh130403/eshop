@@ -24,14 +24,13 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/category/{slug}', [CategoryController::class, 'show'] );
 
-
 Route::get('/cart', [ShopController::class, 'getToCart']);
 
 Route::get('/update-cart', [ShopController::class, 'updateToCart']);
 
-Route::get('/check-out', [ShopController::class, 'getToCheckOut']);
+Route::get('/check-out', [ShopController::class, 'showCheckOutPage']);
 
-Route::get('/confirm-order', [ShopController::class, 'getToConfirm'] );
+Route::get('/confirm-order', [ShopController::class, 'showConfirmPage'] );
 
 Route::post('/confirm-order', [ShopController::class, 'createOrder'] );
 
@@ -51,65 +50,68 @@ Route::get('/product/{slug}', [ProductController::class, 'show']);
 
 Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
-    
-    Route::get('/admin', [ShopController::class, 'showConfigPage']);
 
-    Route::post('/admin', [ShopController::class, 'addConfig']);
     // ADMIN MEDIA
+
+
+    Route::get('/admin/media/create', [MediaController::class, 'create']);
+
+    Route::get('/admin/media/{media}', [MediaController::class, 'edit']);
+
+    Route::put('/admin/media/{media}', [MediaController::class, 'update']);
+
+    Route::delete('/admin/media/{media}', [MediaController::class, 'destroy']);
 
     Route::get('/admin/media', [MediaController::class, 'index']);
 
-    Route::get('/admin/media/upload', [MediaController::class, 'add']);
+    Route::post('/admin/media', [MediaController::class, 'store']);
 
-    Route::post('/admin/media/store', [MediaController::class, 'store']);
-
-    Route::get('/admin/media/edit/{id}', [MediaController::class, 'edit']);
-
-    Route::put('/admin/media/edit/{id}', [MediaController::class, 'update']);
-
-    Route::delete('/admin/media/delete/{id}', [MediaController::class, 'destroy']);
 
 
     // ADMIN CATEGORY
 
+
+    Route::get('/admin/category/create', [CategoryController::class, 'create']);
+
+    Route::get('/admin/category/{category}', [CategoryController::class, 'edit']);
+
+    Route::put('/admin/category/{category}', [CategoryController::class, 'update']);
+
+    Route::delete('/admin/category/{category}', [CategoryController::class, 'delete']);
+
     Route::get('/admin/category', [CategoryController::class, 'index']);
 
-    Route::get('/admin/category/add', [CategoryController::class, 'add']);
+    Route::post('/admin/category', [CategoryController::class, 'store']);
 
-    Route::post('/admin/category/store', [CategoryController::class, 'store']);
-
-    Route::get('/admin/category/edit/{id}', [CategoryController::class, 'edit']);
-
-    Route::put('/admin/category/edit/{id}', [CategoryController::class, 'update']);
-
-    Route::delete('/admin/category/delete/{category}', [CategoryController::class, 'delete']);
 
     // ADMIN/PRODUCTS
+    Route::get('/admin/product/comments', [ProductController::class, 'comments']);
 
-    Route::get('/admin/products/add', [ProductController::class, 'add']);
 
-    Route::post('/admin/products/store', [ProductController::class, 'store']);
+    Route::get('/admin/product/create', [ProductController::class, 'create']);
 
-    Route::get('/admin/products/edit/{id}', [ProductController::class, 'edit']);
+    Route::delete('/admin/product/comment/{comment}/remove', [ProductController::class, 'removeComment']);
+ 
+    Route::post('/admin/product/{product}/comments/add', [ProductController::class, 'addComment']);
 
-    Route::get('/admin/products/', [ProductController::class, 'index']);
+    Route::get('/admin/product/{product}', [ProductController::class, 'edit']);
 
-    Route::post('/admin/products/{productId}/comments/add', [ProductController::class, 'addComment']);
+    Route::delete('/admin/product/{product}', [ProductController::class, 'delete']);
 
-    Route::delete('/admin/products/comment/{comment}/remove', [ProductController::class, 'removeComment']);
+    Route::put('/admin/product/{product}', [ProductController::class, 'update']);
 
-    Route::delete('/admin/products/delete/{product}', [ProductController::class, 'delete']);
+    Route::get('/admin/product/', [ProductController::class, 'index']);
 
-    Route::put('/admin/products/edit/{product}', [ProductController::class, 'update']);
+    Route::post('/admin/product', [ProductController::class, 'store']);
 
-    Route::get('/admin/products/comments', [ProductController::class, 'comments']);
 
+   
     // Orders
     Route::get('/admin/orders', [ShopController::class, 'orders']);
 
     Route::delete('/admin/orders/{order}/delete', [ShopController::class, 'deleteOrder']);
 
-    Route::get('/admin/orders/detail/{order}', [ShopController::class, 'detailOrder']);
+    Route::get('/admin/orders/detail/{order}', [ShopController::class, 'showDetailOrder']);
 
 
     // ADMIN/USERS
@@ -120,6 +122,10 @@ Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
     Route::get('/admin/users/', [AuthController::class, 'gotoUsers']);
 
+        
+    Route::get('/admin', [ShopController::class, 'showConfigPage']);
+
+    Route::post('/admin', [ShopController::class, 'addConfig']);
 
 });
 

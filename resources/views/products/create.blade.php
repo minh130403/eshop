@@ -1,37 +1,70 @@
 @extends('admin.dashbroad')
 
 @section('body')
-<form class="d-flex" action="/admin/category/store" method="POST">
+<form class="d-flex" action="/admin/product" method="POST" id="productForm">
   @csrf
     <div class="container-fluid mt-3">
-        <h3>Add a new Category</h3>
+        <h3>Add a new product</h3>
         <div class="row">
-         
             <div class="col-9">
                     <div class="mb-3">
-                        <label for="title" class="form-label">Category's Title</label>
-                        <input type="text" class="form-control" id="" name="name">
+                        <label for="title" class="form-label">Product's Title</label>
+                        <input type="text" class="form-control" id="" name="name" >
                       </div>
                       <div class="mb-3">
-                        <label for="title" class="form-label">Category's Description:</label>
-                        
-                        <x-forms.tinymce-editor selector="description" ></x-forms.tinymce-editor>
-                        <x-head.tinymce-config selector="description"></x-head.tinymce-config>
+                        <label for="shortDescriptionEditor" class="form-label">Product's Short Description:</label>
+                           <x-forms.tinymce-editor selector="editor" id="short_description" name="short_description" ></x-forms.tinymce-editor>
                       </div>
-                 
+                      <div class="mb-3">
+                        <label for="descriptionEditor" class="form-label">Product's Description:</label>
+                        <x-forms.tinymce-editor selector="editor" id="description_tiny" name="description_tiny"></x-forms.tinymce-editor>
+                        <textarea name="description" id="" style="display: none"></textarea>
+                      </div>
+                      <div class="mb-3">
+                        <label for="title" class="form-label">Categories:</label>
+                        <ul class="list-group border rounded" style="max-height: 200px; overflow-y:scroll;">
+                            @foreach ($categories as $category)
+                            <li class="list-group-item">
+                                
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="{{ $category->id }}" name="categories[]" id="categoryID" >
+                                  <label class="form-check-label" for="categoryID">
+                                    {{ $category->name }}
+                                  </label>
+                                </div>
+                          </li> 
+                            @endforeach
+
+                          </ul>
+                      </div>
+                      <div >
+                        <label class="form-label">Price:</label>
+                      </div>
+                      <div class="input-group mb-3">
+                        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price"  aria-describedby="basic-addon2" min="0" max="100000000000">
+                        <span class="input-group-text" id="basic-addon2">VNĐ</span>
+                       
+                      </div>
+                      @error('price')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                       @enderror
+                      <div >
+                        <label class="form-label">Tags: (Mỗi tag cách nhau bởi 1 dấu chấm phẩy)</label>
+                        <input type="text" class="form-control" >
+                      </div>
+            
             </div>
             <div class="col-3">
                 <div class="mb-3 text-end">
-                  
                     <label id="avatarLabel" class="form-label" for="" data-bs-toggle="modal" data-bs-target="#mediaModal">
-                        <div class="text-start" style="width:100%">Avatar:</div>  
-                        <div class="border rounded mt-2 d-flex justify-content-center align-items-center" style="height: 300px; width:250px">
-                            <i class="fa-solid fa-plus"></i>
-                        </div>
+                      <div class="text-start" style="width:100%">Avatar:</div>  
+                      <div class="border rounded mt-2 d-flex justify-content-center align-items-center" style="height: 300px; width:250px">
+                          <i class="fa-solid fa-plus"></i>
+                      </div>
                     </label>
                     <input type="text" style="display: none" name="avatar_id" id="avatar_id">
                 </div>
-                  
+                
                 <!-- Modal -->
                 <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
                   <div class="modal-dialog  modal-xl">
@@ -92,11 +125,13 @@
                     <button type="submit" class="btn btn-primary">Post</button>
                 </div>
             </div>
-    
+
             
         </div>
     </div>
-  </form>  
 
-   
+  </form>
+
 @endsection
+
+

@@ -4,7 +4,7 @@
     <div class="container-fluid mt-3">
         <h3>Products</h3>
         <div>
-          <a class="btn btn-primary" href="/admin/products/add"><i class="fa-solid fa-plus"></i> Add a New Product</a>
+          <a class="btn btn-primary" href="/admin/product/create"><i class="fa-solid fa-plus"></i> Add a New Product</a>
         </div>
         <div class="row">
             <div class="col">
@@ -26,12 +26,15 @@
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                               </div>
                           </th>
-                          <td style="width:60px"> <img class="border rounded img-fluid" src="{{ asset($product->avatar->src) }}"  alt="..."> </td>
+                          <td style="width:60px"> <img class="border rounded img-fluid" 
+                            @empty($product->avatar->src)  src="https://png.pngtree.com/png-clipart/20230823/original/pngtree-illustration-of-set-different-dairy-milk-products-picture-image_8225323.png " @endempty 
+                            @isset($product->avatar->src)  src="{{ asset($product->avatar->src) }}" alt="{{ $product->avatar->alt }}" @endisset  >
+                          </td>
                           <td>{{ $product->name }}</td>
                           <td>{{ number_format($product->price) }} </td>
                           <td>
-                            <a href="http://localhost:8000/admin/products/edit/{{ $product->id }}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <form action="/admin/products/delete/{{ $product->id }}" method="POST"  style="display: inline-block !important;">
+                            <a href="http://localhost:8000/admin/product/{{ $product->id }}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <form action="/admin/product/{{ $product->id }}" method="POST"  style="display: inline-block !important;">
                               @csrf
                               @method('DELETE')
                               <button class="btn btn-primary" type="submit"><i class="fa-solid fa-trash"></i> </button>

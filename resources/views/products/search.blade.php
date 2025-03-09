@@ -38,18 +38,7 @@
                         </div>
                         <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4">
                             @foreach ($result as $product)
-                            <div class="col mb-3">
-                                <a href="/product/{{ $product->slug }}">
-                                    <div class="card">
-                                      <img style="height: 240px;" src="{{ asset($product->avatar->src) }}" class="card-img-top" alt="{{ $product->avatar->alt }}">
-                                      <div class="card-body" style="height: 160px">
-                                        <h5 class="card-title">{{ $product->name }}</h5>
-                                        <p class="card-text">{{ number_format($product->price)  }} VNĐ</p>
-                                        <a href="/add-to-cart/{{ $product->id }}" class="btn btn-primary">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                            <x-product-card :product="$product"></x-product-card>
                             @endforeach
                         </div>
                         {{ $result->links() }}

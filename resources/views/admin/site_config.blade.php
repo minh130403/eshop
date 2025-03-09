@@ -10,12 +10,18 @@
           <input type="text" class="form-control" id="shopName" value="{{ $shop->name ?? '' }}"  name="name">
         </div>
           <div class="mb-3">
-            <label for="shopFavicon" class="form-label">Shop Favicon:</label>
+            <label for="shopFavicon" class="form-label @error('favicon') is-invalid
+            @enderror ">Shop Favicon:</label>
             <input class="form-control" type="file" id="shopFavicon" name="favicon">
+            @error('favicon')
+            <div class="alert alert-danger">{{ $message }}</div>
+             @enderror
           </div>
             <div class="mb-3">
-                <label for="shopLogo" class="form-label">Logo:</label>
+                <label for="shopLogo" class="form-label @error('logo') is-invalid
+                @enderror" >Logo:</label>
                 <input class="form-control" type="file" id="shopLogo" name="logo">
+
               </div>
             <div class="mb-3">
                 <label for="shopEmail" class="form-label">Shop's email</label>
@@ -23,7 +29,11 @@
               </div>
               <div class="mb-3">
                 <label for="shopPhone" class="form-label">Shop's phone</label>
-                <input type="text" class="form-control" id="shopPhone" name="phone" value="{{ $shop->phone ?? '' }}" >
+                <input type="text" class="form-control @error('phone') is-invalid
+                @enderror" id="shopPhone" name="phone" value="{{ $shop->phone ?? '' }}" >
+                @error('phone')
+                <div class="alert alert-danger">{{ $message }}</div>
+                 @enderror
               </div>
               <div class="mb-3">
                 <label for="shopAddress" class="form-label">Shop's address</label>

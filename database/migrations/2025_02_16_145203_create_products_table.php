@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('short_description')->nullable();
-            $table->string('description')->nullable();
+            $table->text('short_description')->nullable();
+            $table->text('description')->nullable();
             $table->unsignedBigInteger('avatar_id')->nullable();
             $table->string('slug');
-            $table->unsignedInteger('price');
+            $table->unsignedInteger('price')->nullable();
             $table->timestamps();
-            $table->foreign('avatar_id')->references('id')->on('images');
+
+            $table->foreign('avatar_id')->references('id')->on('images')->nullOnDelete();
         });
     }
 

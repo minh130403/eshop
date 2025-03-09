@@ -7,15 +7,21 @@ var app = {
 
             // Media 
             var mediaListElement = document.querySelector('#media-list');
+            var productForm = document.getElementById('productForm');
 
             if(mediaListElement){
                 app.renderMedia(mediaListElement);
             }
+
+            if(productForm){
+                app.fetchProductFormData(productForm);
+            }
+
             
         })
     },
     renderMedia : async function(mediaListElement){ 
-        const  url = 'http://localhost:8000/api/media/all'
+        const  url = 'http://localhost:8000/api/media/'
         try {
             const response = await fetch(url);
             console.log('Hello')
@@ -30,6 +36,7 @@ var app = {
                                     <input type="radio" name="radio" id="radio${image.id}" data-id="${image.id}" style="display:none;">
                                 </div>`
             });
+
 
             mediaListElement.innerHTML = list;
 
@@ -81,6 +88,18 @@ var app = {
         } catch (error) {
             console.error(error.message);
         }
+    }, 
+    fetchProductFormData(productForm){
+        productForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            tinymce.triggerSave();
+          
+            var description_tiny = document.querySelector('textarea[name="description_tiny"]');
+            var description =  document.querySelector('textarea[name="description"]');
+            description.value = description_tiny.value;
+            this.submit();
+           
+        });    
     }
 }
 

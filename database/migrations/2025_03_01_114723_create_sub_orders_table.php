@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedDecimal('quantity');
             $table->unsignedInteger('total_price');
 
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete();
             $table->timestamps();
         });
     }

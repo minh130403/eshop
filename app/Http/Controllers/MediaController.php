@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MediaCollection;
 use App\Models\Media;
 use DateTime;
 use Illuminate\Http\Request;
@@ -14,82 +15,101 @@ use Illuminate\Support\Str;
 
 class MediaController extends Controller
 {
+
+    /**
+     * Show media list
+     * @return mixed|\Illuminate\Contracts\View\View
+     */
     public function index(){
-        $images = Media::all(); 
-        return view('media.index', [
-            'page_group' => 'media',
-            'images' => $images
-        ]);
+        $images = Media::all();
+        $page_group = 'page_group';
+
+        return view('media.index')->with(compact('images', 'page_group'));
     }
 
-    public function add(){
-        return view('media.add', [
-            'page_group' => 'media',
-        ]);
+
+    /**
+     * Show create media form
+     * @return mixed|\Illuminate\Contracts\View\View
+     */
+    public function create(){
+        return view('media.create')->with('page_group', 'media');
     }
 
+
+    /**
+     * Store a new media object
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(Request $request){
+        $validateData = $request->validate(
+            [
+                'image' => ['file', 'image'],
+                'name' => ['required'],
+                'alt' => ['nullable']
+            ]
+        );
 
+        $filePath = $request->file('image')->storeAs('images', Str::of($validateData['name'] . Carbon::now())->slug('-')  ,'public');
 
-        if ($request->hasFile('image')) {
-            $newImage = new Media();
-            $newImage->name = $request->input('name');
-            $newImage->alt = $request->input('alt');
-            $newImage->src = $request->file('image')->storeAs('images', Str::of($newImage->name . Carbon::now())->slug('-')  ,'public');
-            $newImage->save();
+        Media::create(array_merge(array_slice($validateData, 1, 2), ['src' => $filePath]));
+        
 
-            return view('media.edit',[
-                'image' => $newImage,
-                'page_group' => 'media',
-            ]);
-        }
+        return redirect('/admin/media');
 
-        return back();
     }
 
-    public function edit($id){
-        $image = Media::find($id);
-        return view('media.edit', [
-            'image' => $image,
-            'page_group' => 'media',
+    /**
+     * Show edit page 
+     * @param \App\Models\Media $media
+     * @return mixed|\Illuminate\Contracts\View\View
+     */
+    public function edit(Media $media){
+        $page_group = 'media';
+
+        return view('media.edit')->with(compact('media', 'page_group'));
+    }
+
+
+    /**
+     * Update a media object
+     * @param \App\Models\Media $media
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Media $media, Request $request){
+        $validateData = $request->validate([
+            'name' => ['required'],
+            'alt' => ['nullable']
         ]);
-    }
 
-    public function update($id, Request $request){
-        $image = Media::find($id);
-        if($image){
-            $image->name = $request->input('name');
-            $image->alt = $request->input('alt');
-            $image->save();
-            
-            return view('media.edit', [
-                'image' => $image,
-                'page_group' => 'media',
-            ]);
-        }
-
+        $media->update($validateData);
+        
         return back();
+
        
     }
 
-    public function destroy($id){
-        $image = Media::find($id);
-        if($image){
-            Storage::disk('public')->delete( $image->src);
-            $image->delete();
-            return redirect('/admin/media')->with('mess', 'Da xoa thanh cong ');
-        }
-        return back();
+    /**
+     * Destroy a media object
+     * @param \App\Models\Media $media
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function destroy(Media $media){
+        $media->delete();
+        return redirect('/admin/media');
     }
 
 
     
-    public function allApi(){
-        $images = Media::all(); 
-        return response([
-            'data' => $images,
-            'status' => 200
-        ], 200);
+    /**
+     * Get media list
+     * @return MediaCollection
+     */
+    public function indexAPI(){
+        $images = new MediaCollection(Media::all());
+        return $images;
     }
     
 }
