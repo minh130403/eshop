@@ -22,7 +22,7 @@ class MediaController extends Controller
      */
     public function index(){
         $images = Media::all();
-        $page_group = 'page_group';
+        $page_group = 'media';
 
         return view('media.index')->with(compact('images', 'page_group'));
     }

@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Product;
 use App\Models\Media;
 use App\Models\Cart;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,9 @@ class ProductController extends Controller
             'name' => ['required'],
             'description' => ['nullable'],
             'short_description' => ['nullable'],
-            'price' => ['nullable','numeric', 'max:1000000000' ,'min:0'],
+            'price' => ['nullable','numeric', 'max:1000000000' ,'min:0', 'gt:sale_price'],
+            'sale_price' => ['nullable', 'numeric', 'min:1'],
+            'tags' => ['nullable'],
             'avatar_id' => ['nullable', 'image'],
             'categories' => ['nullable', 'array', 'exists:categories,id'],
         ]);
@@ -54,7 +57,12 @@ class ProductController extends Controller
 
         $product = Product::create(array_merge(array_slice($validatedData,0,5), ['slug' => Str::of($validatedData['name'])->slug('_')]) );
 
-       
+        $tagsArray = explode(";", $validatedData['tags']);
+
+        foreach($tagsArray as $tagElement){
+            $tag = Tag::firstOrCreate(['name' => trim($tagElement), 'slug' => Str::of(trim($tagElement))->slug('_')]);
+            $tag->products()->save($product);
+        }
 
 
         if(isset($validatedData['categories'])){
@@ -92,8 +100,10 @@ class ProductController extends Controller
             'name' => ['required'],
             'description' => ['nullable'],
             'short_description' => ['nullable'],
-            'price' => ['nullable','numeric', 'max:1000000000' ,'min:0'],
+            'price' => ['nullable','numeric', 'max:1000000000' ,'min:0', 'gt:sale_price'],
+            'sale_price' => ['nullable', 'numeric', 'min:1'],
             'avatar_id' => ['nullable', 'exists:images,id'],
+            'tags' => ['nullable'],
             'categories' => ['nullable', 'array', 'exists:categories,id'],
         ]);
 
@@ -101,6 +111,15 @@ class ProductController extends Controller
 
 
         $product->update(array_merge(array_slice($validatedData,0, 5), ['slug' => Str::of($validatedData['name'])->slug('_')]));
+
+        $product->tags()->detach();
+
+        $tagsArray = explode(";", $validatedData['tags']);
+
+        foreach($tagsArray as $tagElement){
+            $tag = Tag::firstOrCreate(['name' => trim($tagElement), 'slug' => Str::of(trim($tagElement))->slug('_')]);
+            $tag->products()->save($product);
+        }
 
         // $product->avatar_id = (int) $validatedData['avatar_id'];
 
@@ -139,7 +158,7 @@ class ProductController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($slug){
-        $product = Product::where('slug', $slug)->first();
+        $product = Product::where('slug', $slug)->firstOrFail();
 
         return view('products.view')->with(compact('product'));
     }
@@ -220,6 +239,19 @@ class ProductController extends Controller
         $comment->content = $request->input('content');
         $comment->user_id = Auth::id();
         $comment->product_id = $product->id;
+        $comment->save();
+
+        return back();
+    }
+
+    /**
+     * Update sate of comment
+     * @param \App\Models\Comment $comment
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStateComment(Comment $comment, Request $request){
+        $comment->state = $request->input('state');
         $comment->save();
 
         return back();

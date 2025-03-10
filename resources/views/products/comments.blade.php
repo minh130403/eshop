@@ -12,6 +12,7 @@
                           <th scope="col">Content</th>
                           <th scope="col">User</th>
                           <th scope="col">Product</th>
+                          <th scope="col">State</th>
                           <th scope="col">Actions</th>
                         </tr>
                       </thead>
@@ -26,6 +27,16 @@
                           <td>{{ $comment->content }}</td>
                           <td>{{ $comment->user->name }}</td>
                           <td>{{ $comment->product->name }}</td>
+                          <td>
+                            <form id="updateComment{{$comment->id }}" action="/admin/comment/{{ $comment->id }}/update_state" method="POST" style="display: inline-block !important;">
+                              @csrf
+                              @method('PUT')
+                              <select class="form-select" aria-label="Default select example" name="state">
+                                <option value="1" {{ $comment->state == 0 ? 'selected' : '' }}>Inactive</option>
+                                <option value="0" {{ $comment->state == 1 ? 'selected' : '' }}>Active</option>
+                              </select>
+                            </form>
+                          </td>
                           <td>
                             <form action="/admin/products/comment/{{ $comment->id }}/remove" method="POST"  style="display: inline-block !important;">
                               @csrf

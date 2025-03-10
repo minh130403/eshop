@@ -30,6 +30,7 @@ class Product extends Model
          'short_description',
          'slug',
          'price',
+         'sale_price',
          'avatar_id'
      ];
 
@@ -53,6 +54,10 @@ class Product extends Model
 
     public function comments(){
         return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
+    }
+
+    public function tags()  {
+        return $this->morphToMany(Tag::class, 'taggables', 'taggables', 'taggable_id', 'tag_id');
     }
 
 }

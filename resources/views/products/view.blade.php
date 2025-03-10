@@ -13,7 +13,9 @@
         <hr>
         <div class="row mb-3">
             <div class="col-12 col-md-4">
-                <img src="{{ asset($product->avatar->src) }}" class="img-fluid object-fit-scale" alt="{{ $product->avatar->alt }}">
+                <img class="img-fluid object-fit-scale" alt="{{ $product->avatar->alt ?? null}}"
+                @empty($product->avatar->src)  src="https://png.pngtree.com/png-clipart/20230823/original/pngtree-illustration-of-set-different-dairy-milk-products-picture-image_8225323.png " @endempty 
+                @isset($product->avatar->src)  src="{{ asset($product->avatar->src) }}" alt="{{ $product->avatar->alt }}" @endisset  >
             </div>
 
             <div class="col-12 col-md-8">
@@ -28,10 +30,9 @@
                 <hr>
                 <div id="tagsGroup" class="mb-1">
                     Tags:
-                    <a class="tag-item mb-1">T-shirt</a> 
-                    <a class="tag-item mb-1">Teanager</a> 
-                    <a class="tag-item mb-1">Fashian</a> 
-                    <a class="tag-item mb-1">Cheap</a>
+                    @foreach ($product->tags as  $tag)
+                        <a class="badge text-bg-primary" href="/tag/{{ $tag->slug }}" style="text-decoration: none">{{ $tag->name }}</a>
+                    @endforeach
                 </div>
             </div>
             
@@ -46,7 +47,11 @@
                   <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Description</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Comments</button>
+                  <button class="nav-link position-relative" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Comments
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ $product->loadCount('comments')->comments_count }}
+                  </span></button>
+                    
                 </li>
               </ul>
               <div class="tab-content" id="productTabContent">
@@ -58,7 +63,7 @@
 
                 {{-- Comments --}}
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                    <form class="mt-2" action="/admin/products/{{ $product->id }}/comments/add" class="d-flex" method="post">
+                    <form class="mt-2" action="/admin/product/{{ $product->id }}/comments/add" class="d-flex" method="post">
                         @csrf
                         <div class="form-floating mb-2">
                             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="content"></textarea>
@@ -81,7 +86,7 @@
                                     <pre class="border rounded p-4" >{{ $comment->content }}</pre>
                                     @if (Auth::id() == $comment->user->id)
                                     <div class="text-end">
-                                        <form action="/admin/products/comment/{{ $comment->id }}/remove" method="post"> 
+                                        <form action="/admin/product/comment/{{ $comment->id }}/remove" method="post"> 
                                             @csrf 
                                             @method('delete') 
                                             <button class="btn btn-primary ">Delete <i class="fa-solid fa-trash"></i></button>

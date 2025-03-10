@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\Media::factory()->create();
+        \App\Models\Tag::factory(36)->create();
 
 
         \App\Models\User::factory()->create([
@@ -38,6 +39,6 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\Category::factory(10)->create();
-        \App\Models\Product::factory(100)->create();
+        \App\Models\Product::factory(count: 50)->create();
     }
 }

@@ -42,22 +42,27 @@
                       <div >
                         <label class="form-label">Price:</label>
                       </div>
-                      <div class="input-group mb-3">
-                        
+                      <div class="input-group mb-3">    
                         <input type="number" class="form-control @error('price') is-invalid @enderror" name="price"  aria-describedby="basic-addon2" value="{{ $product->price }}">
-                        
                         <span class="input-group-text" id="basic-addon2">VNĐ</span>
-                        
-                        
                       </div>
                       @error('price')
                         <div class="alert alert-danger">{{ $message }}</div>
-                         @enderror
+                      @enderror
+                      <div >
+                      <label class="form-label">Sale Price:</label>
+                      </div>
+                      <div class="input-group mb-3">
+                      <input type="number" class="form-control @error('sale_price') is-invalid @enderror" name="sale_price"  min="0" max="100000000000" value="{{ $product->sale_price }}">
+                        <span class="input-group-text">VNĐ</span>
+                      </div>
+                      @error('sale_price')
+                      <div class="alert alert-danger"> {{ $message }}</div>
+                        @enderror
                       <div >
                         <label class="form-label">Tags: (Mỗi tag cách nhau bởi 1 dấu chấm phẩy)</label>
-                        <input type="text" class="form-control" >
+                        <input type="text" class="form-control" name="tags">
                       </div>
-            
             </div>
             <div class="col-3">
                 <div class="mb-3 text-end">

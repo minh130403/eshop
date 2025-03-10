@@ -34,6 +34,7 @@
                             <option value="1" {{ $user->level->id == 1 ? 'selected' : '' }}>Admin</option>
                           </select>
                         </form>
+                      </td>
                       <td style="text-transform: uppercase">{{ $user->state->name ?? '' }}</td>
                      
                       <td>  

@@ -6,6 +6,8 @@ use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TagController;
+use App\Models\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,7 @@ use App\Http\Controllers\ProductController;
 
 
 
-
+Route::get('/tag/{slug}', [TagController::class, 'show']);
 
 Route::get('/category/{slug}', [CategoryController::class, 'show'] );
 
@@ -44,7 +46,13 @@ Route::get('/product/search', [ProductController::class, 'search']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 
 
+Route::middleware('auth')->group(function() {
 
+    Route::delete('/admin/product/comment/{comment}/remove', [ProductController::class, 'removeComment']);
+ 
+    Route::post('/admin/product/{product}/comments/add', [ProductController::class, 'addComment']);
+    
+});
 
 // ADMIN 
 
@@ -83,6 +91,21 @@ Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
     Route::post('/admin/category', [CategoryController::class, 'store']);
 
+    // ADMIN TAG
+
+    Route::get('/admin/tag/create', [TagController::class, 'create']);
+
+
+    Route::delete('/admin/tag/{tag}', [TagController::class, 'delete']);
+   
+    Route::put('/admin/tag/{tag}', [TagController::class, 'update']);
+
+    Route::get('/admin/tag/{tag}', [TagController::class, 'edit']);
+
+    Route::post('/admin/tag', [TagController::class, 'store']);
+
+    Route::get('/admin/tag', [TagController::class, 'index']);
+
 
     // ADMIN/PRODUCTS
     Route::get('/admin/product/comments', [ProductController::class, 'comments']);
@@ -90,9 +113,6 @@ Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
     Route::get('/admin/product/create', [ProductController::class, 'create']);
 
-    Route::delete('/admin/product/comment/{comment}/remove', [ProductController::class, 'removeComment']);
- 
-    Route::post('/admin/product/{product}/comments/add', [ProductController::class, 'addComment']);
 
     Route::get('/admin/product/{product}', [ProductController::class, 'edit']);
 

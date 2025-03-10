@@ -39,6 +39,7 @@
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="/admin/product/create"><i class="fa-solid fa-plus"></i> Add a New Product</a></li>
                               <li><a class="dropdown-item" href="/admin/product"><i class="fa-solid fa-bars"></i> All Products</a></li>
+                              <li><a class="dropdown-item" href="/admin/tag"><i class="fa-solid fa-tags"></i>Tags</a></li>
                               <li><a class="dropdown-item" href="/admin/product/comments"><i class="fa-solid fa-comment"></i> Comments</a></li>
                               {{-- <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash"></i> Trash</a></li> --}}
                             </ul>

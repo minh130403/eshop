@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\ShopConfig;
+use App\Observers\ProductObServer;
 use App\View\Components\ProductCard;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -28,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $categories = Category::all();
+        $categories = Category::all() ?? null;
         View::share('categories', $categories);
 
         $shop = ShopConfig::orderBy('created_at', 'desc')->first() ?? null;
@@ -37,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
 
 
         Paginator::useBootstrapFive();
+
+        // Product::observe(ProductObServer::class);
     }
 }
