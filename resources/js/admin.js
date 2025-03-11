@@ -143,17 +143,12 @@ var app = {
                 })
                 console.log(form)
 
-                
-
-                for (const [key, value] of form.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
+            
 
                 fetch('http://localhost:8000/api/users/multiple-delete',{
                     method: 'delete',
                     headers: {
-                        'Content-Type': 'application/json',
-                        
+                        'Content-Type': 'application/json'   
                     },
                     body: JSON.stringify({ id_arrays: usersID })
                 }).then(res => {
@@ -161,12 +156,27 @@ var app = {
                 })
 
             } else if(actionSelected == 'UPDATE'){
-                var formsSelected = [];
+                var data = [];
+
                 usersID.forEach(userID => {
-                    formsSelected.push( document.querySelector(`#updateUser${userID}`));
+                    var form =  document.querySelector(`#updateUser${userID}`);
+                    data.push({id: userID, level: +form.querySelector('select').value});
+                })
+
+                console.log(data)
+
+                fetch('http://localhost:8000/api/users/multiple-update',{
+                    method: 'post',
+                    headers:{
+                        'Content-Type': 'application/json',
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({ 'updates': data })
+                }).then(res => {
+                    location.reload(true);
                 })
     
-                console.log(formsSelected);
+                // console.log(formsSelected);
             }
 
            

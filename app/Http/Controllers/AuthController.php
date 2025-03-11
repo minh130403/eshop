@@ -152,9 +152,17 @@ class AuthController extends Controller
     }
 
 
-    public function updateMultiple(Request $request){
-        $validateData = $request->validate(
-            
-        );
+    public function multipleUpdate(Request $request){
+        // $validateData = $request->validate([
+        //     'updates' => ['required','array'],
+        //     'updates.*.id' => ['required', 'integer', 'exists:users,id'],
+        //     'updates.*.state' => ['required', 'integer']
+        // ]);
+
+        foreach ($request->updates as $update) {
+            User::find($update['id'])->update(['level_id' => $update['level']]);
+        }
+
+        return response()->json(['message' => 'Cập nhật hàng loạt thành công!']);
     }
 }

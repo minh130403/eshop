@@ -13,6 +13,7 @@
     <script src="https://cdn.tiny.cloud/1/q621zku9ks0ovuoai50q1h5mksnfw5iyec9hnvib6xrbgefr/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     @vite(['resources/js/admin.js', 'resources/js/bootstrap.js', 'resources/css/bootstrap.css', 
     'resources/css/admin.css'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
    <style>
 
     </style>

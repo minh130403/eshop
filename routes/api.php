@@ -23,5 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::delete('/users/multiple-delete', [AuthController::class, 'multipleDelete']);
 
+Route::post('/users/multiple-update', [AuthController::class, 'multipleUpdate']);
+
 Route::get('/media', [MediaController::class, 'indexAPI']);
 
