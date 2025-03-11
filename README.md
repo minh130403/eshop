@@ -20,4 +20,4 @@ Phiên bản trang web này được xây dựng trên nền tảng Laravel 9x (
 5. Để có dữ liệu sử dụng lệnh 🌱: ``` php artisan db:seed```
 
 ---
-   
+### Truy cập trang quản trị ứng dụng bằng đường dẫn http://localhost:8000/admin/
