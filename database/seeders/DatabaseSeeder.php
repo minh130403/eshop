@@ -37,6 +37,28 @@ class DatabaseSeeder extends Seeder
             'level_id' => 1
         ]);
 
+        \App\Models\User::factory()->create([
+            'name' => 'minh',
+            'email' => 'minh@example.com',
+            'password' => Hash::make('minh123'),
+            'level_id' => 2
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'minh',
+            'email' => 'minh2@example.com',
+            'password' => Hash::make('minh123'),
+            'level_id' => 2
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'minh',
+            'email' => 'minh3@example.com',
+            'password' => Hash::make('minh123'),
+            'level_id' => 2
+        ]);
+
+
 
         \App\Models\Category::factory(10)->create();
         \App\Models\Product::factory(count: 50)->create();

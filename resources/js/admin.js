@@ -8,6 +8,7 @@ var app = {
             // Media 
             var mediaListElement = document.querySelector('#media-list');
             var productForm = document.getElementById('productForm');
+            var userPage = document.getElementById('users-index');
 
             if(mediaListElement){
                 app.renderMedia(mediaListElement);
@@ -15,6 +16,10 @@ var app = {
 
             if(productForm){
                 app.fetchProductFormData(productForm);
+            }
+
+            if(userPage){
+                app.updateUserfromAdmin();
             }
 
             
@@ -100,7 +105,83 @@ var app = {
             this.submit();
            
         });    
-    }
+    },
+    updateUserfromAdmin(){
+        var updateBtnUserState = document.querySelectorAll('.updateUser');
+        var selectActionElement = document.querySelector('#action-selector');
+        var multipleSubmitBtn = document.querySelector('#multipleSubmitBtn');
+
+        updateBtnUserState.forEach(btn => {
+            btn.onclick = function(){
+              document.querySelector('#' + this.dataset.formUpdate).submit();
+            }
+        });
+
+        var actionSelected;
+
+        selectActionElement.onchange = function(){
+            actionSelected = selectActionElement.value;
+        }
+
+        multipleSubmitBtn.onclick = function(){
+            var usersCheckboxSelected  = document.querySelectorAll('.check-box-action:checked');
+            var usersID= [];
+
+            usersCheckboxSelected.forEach(userCheckBox => {
+                usersID.push(+userCheckBox.dataset.id);
+            })
+
+
+
+            if(actionSelected == 'DELETE'){
+                var form = new FormData();
+                // form.append('name', 'Minh')
+
+                // console.log(usersID)
+                usersID.forEach(id => {
+                    form.append('id_arrays', id);
+                })
+                console.log(form)
+
+                
+
+                for (const [key, value] of form.entries()) {
+                    console.log(`${key}: ${value}`);
+                }
+
+                fetch('http://localhost:8000/api/users/multiple-delete',{
+                    method: 'delete',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        
+                    },
+                    body: JSON.stringify({ id_arrays: usersID })
+                }).then(res => {
+                    location.reload(true);
+                })
+
+            } else if(actionSelected == 'UPDATE'){
+                var formsSelected = [];
+                usersID.forEach(userID => {
+                    formsSelected.push( document.querySelector(`#updateUser${userID}`));
+                })
+    
+                console.log(formsSelected);
+            }
+
+           
+
+
+            // console.log(usersID);
+            
+            // location.reload(true);
+        };
+
+
+        
+
+
+    },
 }
 
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +56,7 @@ class AuthController extends Controller
             'name' => $validateData['name'],
             'email' => $validateData['email'],
             'password' => Hash::make( $validateData['password']),
-        ]);
+         ]);
 
         $user->level_id = 2;
         $user->save();
@@ -99,7 +101,12 @@ class AuthController extends Controller
         return back();
     }
 
-
+    /**
+     * Update state of a user
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateState(Request $request,User $user)
     {
         $user->level_id = $request->input('state');
@@ -107,5 +114,47 @@ class AuthController extends Controller
         $user->save();
 
         return back();
+    }
+    
+
+    
+    public function multipleDelete(Request $request) {
+        $validateData = $request->validate([
+            'id_arrays' => ['array'] // Thêm 'required' để tránh dữ liệu rỗng
+        ]);
+    
+        if (empty($validateData['id_arrays'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không có user nào được chọn!'
+            ], 400);
+        }
+    
+        // Lấy danh sách user trước khi xóa (nếu cần log)
+        $users = User::whereIn('id', $validateData['id_arrays'])->get();
+    
+        // Thực hiện xóa user
+        $deleted = User::whereIn('id', $validateData['id_arrays'])->delete();
+    
+        if ($deleted > 0) { // Kiểm tra xem có user nào bị xóa không
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Xóa thành công!',
+                'deleted_count' => $deleted,
+                'deleted_users' => $users
+            ], 200);
+        }
+    
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Không thể xóa người dùng!'
+        ], 500);
+    }
+
+
+    public function updateMultiple(Request $request){
+        $validateData = $request->validate(
+            
+        );
     }
 }

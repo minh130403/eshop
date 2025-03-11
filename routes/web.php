@@ -136,6 +136,8 @@ Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
     // ADMIN/USERS
 
+    
+
     Route::delete('/admin/users/{user}/delete', [AuthController::class, 'deleteUser']);
 
     Route::put('/admin/users/{user}/update_state', [AuthController::class, 'updateState']);
@@ -147,7 +149,13 @@ Route::middleware(['auth', 'admin', 'check.device'])->group(function(){
 
     Route::post('/admin', [ShopController::class, 'addConfig']);
 
+    
+
+
 });
+
+
+
 
 Route::get('/admin/register', function () { return view('admin.register');})->name('register');
 
